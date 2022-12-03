@@ -1,9 +1,10 @@
-import React from "react";
 import { useState } from "react";
 import QRCode from "react-qr-code";
 
 export default function Modal() {
-  const [showModal, setShowModal] = React.useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [success, setSuccess] = useState(false);
   const API_URL = "http://localhost:9081";
   const [zkAddress, setZkAddress] = useState("");
 
@@ -14,10 +15,33 @@ export default function Modal() {
     localStorage.setItem("orderId", 1);
   }
 
+  const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
+  const checkTransaction = async () => {
+    await delay(120000);
+    fetch(
+      API_URL +
+        `/getPaymentStatus/${localStorage.getItem(
+          "orderId"
+        )}/${localStorage.getItem("api_key")}`
+    )
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.status === "success") {
+          setProcessing(false);
+          setSuccess(true);
+          localStorage.setItem(
+            "orderId",
+            Number(localStorage.getItem("orderId") + 1)
+          );
+        }
+      });
+  };
+
   const buyItem = () => {
     fetch(
       API_URL +
-        `/getAddressToPay/${1000000000}/${localStorage.getItem(
+        `/getAddressToPay/${100000000}/${localStorage.getItem(
           "orderId"
         )}/${localStorage.getItem("api_key")}`
     )
@@ -26,16 +50,36 @@ export default function Modal() {
         setZkAddress(json.zkAddress);
       });
     setShowModal(true);
+    setProcessing(true);
+    checkTransaction();
   };
   return (
     <>
-      <button
-        className="w-full bg-indigo-500 text-white font-bol py-2 px-12 rounded"
-        type="button"
-        onClick={() => buyItem()}
-      >
-        Pay with ZkPay
-      </button>
+      {success ? (
+        <button
+          className="w-full bg-green-500 text-white font-bol py-2 px-12 rounded"
+          type="button"
+          onClick={() => console.log("success")}
+        >
+          Payment Success
+        </button>
+      ) : processing ? (
+        <button
+          className="w-full bg-indigo-500 text-white font-bol py-2 px-12 rounded"
+          type="button"
+          onClick={() => console.log("Processing")}
+        >
+          Processing
+        </button>
+      ) : (
+        <button
+          className="w-full bg-indigo-500 text-white font-bol py-2 px-12 rounded"
+          type="button"
+          onClick={() => buyItem()}
+        >
+          Pay with ZkPay
+        </button>
+      )}
       {showModal ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
@@ -48,6 +92,7 @@ export default function Modal() {
                 </div>
                 <div className="flex justify-center mt-12">
                   <QRCode value={zkAddress} />
+                  <span>{zkAddress}</span>
                 </div>
                 <div className="relative p-6 flex-auto">
                   <p className="my-4 text-slate-500 text-lg leading-relaxed"></p>

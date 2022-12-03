@@ -16,7 +16,6 @@ function App({ Component, pageProps }) {
         mode: "cors",
         headers: {
           "Access-Control-Allow-Origin": "*",
-          s,
         },
       })
         .then((res) => res.json())
