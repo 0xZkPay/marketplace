@@ -1,10 +1,7 @@
+import { useState } from "react";
+import Modal from "../components/Modal";
+
 export default function Home() {
-  const API_URL = "http://localhost:9081";
-
-  const buyItem = () => {
-    fetch(API_URL + "");
-  };
-
   return (
     <div className="bg-black flex flex-col items-center">
       <div
@@ -38,12 +35,7 @@ export default function Home() {
         </div>
         <div className="p-4 bg-black">
           <p className="text-2xl mb-2 font-bold text-white">1 BOB</p>
-          <button
-            className="w-full bg-indigo-500 text-white font-bol py-2 px-12 rounded"
-            onClick={() => buyItem()}
-          >
-            Buy
-          </button>
+          <Modal />
         </div>
       </div>
     </div>
