@@ -90,9 +90,9 @@ export default function Modal() {
                     Scan QR to get ZK address
                   </h3>
                 </div>
+                <h4 className="text-xl ml-8 mr-8 mt-8">{zkAddress}</h4>
                 <div className="flex justify-center mt-12">
                   <QRCode value={zkAddress} />
-                  <span>{zkAddress}</span>
                 </div>
                 <div className="relative p-6 flex-auto">
                   <p className="my-4 text-slate-500 text-lg leading-relaxed"></p>
