@@ -41,7 +41,7 @@ export default function Modal() {
   const buyItem = () => {
     fetch(
       API_URL +
-        `/getAddressToPay/${100000000}/${localStorage.getItem(
+        `/getAddressToPay/${1000000000}/${localStorage.getItem(
           "orderId"
         )}/${localStorage.getItem("api_key")}`
     )
