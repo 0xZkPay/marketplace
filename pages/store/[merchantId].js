@@ -61,7 +61,7 @@ const StoreProducts = () => {
         SystemProgram.transfer({
           fromPubkey: publicKey,
           toPubkey: new PublicKey(receivingAddress),
-          lamports: `${product.price}00000000`, // Convert SOL to lamports
+          lamports: `${product.price}000000000`, // Convert SOL to lamports
         })
       );
 
@@ -111,9 +111,9 @@ const StoreProducts = () => {
 
   // Mock products for demonstration purposes
   const mockProducts = [
-    { id: 1, name: 'Sedan', price: 10 },
-    { id: 2, name: 'SUV', price: 75 },
-    { id: 2, name: 'Electric', price: 100 },
+    { id: 1, name: 'Sedan', price: 1 },
+    { id: 2, name: 'SUV', price: 2 },
+    { id: 2, name: 'Electric', price: 3 },
     // ... add more mock products as needed
   ];
 
